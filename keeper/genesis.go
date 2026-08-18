@@ -31,11 +31,33 @@ func (k Keeper) InitGenesis(ctx sdk.Context, state types.GenesisState) {
 	}
 }
 
-// ExportGenesis exports ibc nft-transfer  module's portID and class trace info into its genesis state.
+// ExportGenesis exports ibc nft-transfer module's portID and class trace info into its genesis state.
 func (k Keeper) ExportGenesis(ctx sdk.Context) *types.GenesisState {
 	return &types.GenesisState{
 		PortId: k.GetPort(ctx),
 		Traces: k.GetAllClassTraces(ctx),
 		Params: k.GetParams(ctx),
 	}
+}
+
+// SetPort sets the port ID for the nft-transfer module
+func (k Keeper) SetPort(ctx sdk.Context, portID string) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set([]byte(types.PortKey), []byte(portID))
+}
+
+// GetPort gets the port ID for the nft-transfer module
+func (k Keeper) GetPort(ctx sdk.Context) string {
+	store := ctx.KVStore(k.storeKey)
+	return string(store.Get([]byte(types.PortKey)))
+}
+
+// BindPort binds to the nft-transfer port
+func (k Keeper) BindPort(ctx sdk.Context, portID string) error {
+	return k.portKeeper.BindPort(ctx, portID)
+}
+
+// IsBound checks if the nft-transfer module is already bound to the port
+func (k Keeper) IsBound(ctx sdk.Context, portID string) bool {
+	return k.GetPort(ctx) == portID
 }

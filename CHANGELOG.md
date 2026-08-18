@@ -36,6 +36,17 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ## [Unreleased]
 
+## [v1.2.0-ibc-v10] - 2026-08-18
+
+Uptick Network fork of `bianjieai/nft-transfer` for ibc-go v10.
+
+### API Breaking
+
+* Upgrade from ibc-go v8 / Cosmos SDK v0.50 to ibc-go v10 / Cosmos SDK v0.53.
+* Drop capability-keeper usage (`ClaimCapability` / `AuthenticateCapability` / `scopedKeeper`); ibc-go v10 binds ports via the IBC router.
+* IBC module callbacks take `channelVersion` and no longer receive a channel capability.
+* CLI relative timeouts are not supported (ibc-go v10 removed `QueryLatestConsensusState`); use absolute timeouts.
+
 ## [v1.1.3]
 
 ### Improvements

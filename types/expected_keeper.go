@@ -3,12 +3,10 @@ package types
 import (
 	context "context"
 
-	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	clienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types"
-	channeltypes "github.com/cosmos/ibc-go/v8/modules/core/04-channel/types"
+	clienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
+	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
 )
 
 // Class defines the interface specifications of collection that can be transferred across chains
@@ -43,7 +41,6 @@ type NFTKeeper interface {
 type ICS4Wrapper interface {
 	SendPacket(
 		ctx sdk.Context,
-		chanCap *capabilitytypes.Capability,
 		sourcePort string,
 		sourceChannel string,
 		timeoutHeight clienttypes.Height,
@@ -59,8 +56,11 @@ type ChannelKeeper interface {
 }
 
 // PortKeeper defines the expected IBC port keeper
+// In ibc-go v10, port binding is handled by the IBC router automatically.
+// This interface is kept for API compatibility but BindPort is a no-op.
 type PortKeeper interface {
-	BindPort(ctx sdk.Context, portID string) *capabilitytypes.Capability
+	// BindPort is a no-op in ibc-go v10 — ports are bound via IBC router
+	BindPort(ctx sdk.Context, portID string) error
 }
 
 // AccountKeeper defines the contract required for account APIs.
