@@ -2,11 +2,11 @@ package keeper_test
 
 import (
 	"cosmossdk.io/x/nft"
-	channeltypes "github.com/cosmos/ibc-go/v8/modules/core/04-channel/types"
-	host "github.com/cosmos/ibc-go/v8/modules/core/24-host"
+	channeltypes "github.com/cosmos/ibc-go/v10/modules/core/04-channel/types"
+	host "github.com/cosmos/ibc-go/v10/modules/core/24-host"
 
-	ibctesting "github.com/bianjieai/nft-transfer/testing"
 	"github.com/bianjieai/nft-transfer/types"
+	ibctesting "github.com/cosmos/ibc-go/v10/testing"
 )
 
 // The following test describes the entire cross-chain process of nft-transfer.
@@ -14,7 +14,7 @@ import (
 // A -> B -> C -> A -> C -> B ->A
 func (suite *KeeperTestSuite) TestSendAndReceive() {
 	pathA2B := NewTransferPath(suite.chainA, suite.chainB)
-	suite.coordinator.Setup(pathA2B)
+	pathA2B.Setup()
 
 	classID := "cryptoCat"
 	classURI := "cat_uri"
@@ -66,8 +66,8 @@ func (suite *KeeperTestSuite) TestSendAndReceive() {
 	pathB2C := NewTransferPath(suite.chainB, suite.chainC)
 	suite.Run("transfer forward B->C", func() {
 		{
-			suite.coordinator.SetupConnections(pathB2C)
-			suite.coordinator.CreateChannels(pathB2C)
+			pathB2C.SetupConnections()
+			pathB2C.CreateChannels()
 
 			packet = suite.transferNFT(
 				pathB2C.EndpointA,
@@ -90,8 +90,8 @@ func (suite *KeeperTestSuite) TestSendAndReceive() {
 	pathC2A := NewTransferPath(suite.chainC, suite.chainA)
 	suite.Run("transfer forward C->A", func() {
 		{
-			suite.coordinator.SetupConnections(pathC2A)
-			suite.coordinator.CreateChannels(pathC2A)
+			pathC2A.SetupConnections()
+			pathC2A.CreateChannels()
 
 			packet = suite.transferNFT(
 				pathC2A.EndpointA,

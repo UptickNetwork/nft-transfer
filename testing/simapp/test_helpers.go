@@ -27,6 +27,8 @@ import (
 
 	abci "github.com/cometbft/cometbft/abci/types"
 	cmttypes "github.com/cometbft/cometbft/types"
+
+	ibctesting "github.com/cosmos/ibc-go/v10/testing"
 )
 
 // SetupOptions defines arguments that are passed into `Simapp` constructor.
@@ -133,4 +135,11 @@ func SignAndDeliver(
 		NextValidatorsHash: nextValHash,
 		Txs:                [][]byte{txBytes},
 	})
+}
+
+// SetupTestingApp is the ibc-go v10 AppCreator used by keeper ICS-721 tests.
+func SetupTestingApp() (ibctesting.TestingApp, map[string]json.RawMessage) {
+	db := dbm.NewMemDB()
+	app := NewSimApp(log.NewNopLogger(), db, nil, true, simtestutil.EmptyAppOptions{})
+	return app, app.DefaultGenesis()
 }

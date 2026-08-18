@@ -22,19 +22,18 @@ type Keeper struct {
 
 	ics4Wrapper   porttypes.ICS4Wrapper
 	channelKeeper types.ChannelKeeper
-	portKeeper    types.PortKeeper
 	nftKeeper     types.NFTKeeper
 	authKeeper    types.AccountKeeper
 }
 
-// NewKeeper creates a new IBC nft-transfer Keeper instance
+// NewKeeper creates a new IBC nft-transfer Keeper instance.
+// ibc-go v10 binds ports via the IBC router, so there is no PortKeeper.
 func NewKeeper(
 	cdc codec.Codec,
 	key storetypes.StoreKey,
 	authority string,
 	ics4Wrapper porttypes.ICS4Wrapper,
 	channelKeeper types.ChannelKeeper,
-	portKeeper types.PortKeeper,
 	authKeeper types.AccountKeeper,
 	nftKeeper types.NFTKeeper,
 ) Keeper {
@@ -44,7 +43,6 @@ func NewKeeper(
 		authority:     authority,
 		ics4Wrapper:   ics4Wrapper,
 		channelKeeper: channelKeeper,
-		portKeeper:    portKeeper,
 		nftKeeper:     nftKeeper,
 		authKeeper:    authKeeper,
 	}

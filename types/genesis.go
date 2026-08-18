@@ -13,7 +13,7 @@ func NewGenesisState(portID string, traces Traces, params Params) *GenesisState 
 	}
 }
 
-// DefaultGenesisState returns a GenesisState with "nft-transfer" as the default PortID.
+// DefaultGenesisState returns a GenesisState with PortID as the default port.
 func DefaultGenesisState() *GenesisState {
 	return &GenesisState{
 		PortId: PortID,

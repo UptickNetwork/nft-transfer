@@ -15,8 +15,11 @@ const (
 	// module supports
 	Version = "ics721-1"
 
-	// PortID is the default port id that nft-transfer module binds to
-	PortID = "nft-transfer"
+	// PortID is the default port id that nft-transfer module binds to.
+	// ibc-go v10 looks up IBCModule callbacks by port ID and rejects
+	// non-alphanumeric route keys, so this must equal ModuleName.
+	// The ICS-721 spec string "nft-transfer" cannot be registered.
+	PortID = ModuleName
 
 	// StoreKey is the store key string for IBC nft-transfer
 	StoreKey = ModuleName

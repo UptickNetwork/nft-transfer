@@ -36,6 +36,23 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ## [Unreleased]
 
+## [v1.3.0-ibc-v10] - 2026-08-18
+
+### API Breaking
+
+* `NewKeeper` no longer takes a `PortKeeper`. ibc-go v10 binds ports via the IBC router.
+* Default `PortID` is now `ModuleName` (`nonfungibletokentransfer`). ibc-go v10 keys the v1 router by port ID and rejects hyphens, so the ICS-721 spec string `nft-transfer` cannot be registered.
+
+### State Machine Breaking
+
+* InitGenesis only stores the port ID (no `BindPort` / capability claim). Host chains must `AddRoute(PortID, ...)`.
+* Existing chains that stored port `nft-transfer` must rewrite it to `PortID` at upgrade.
+
+### Improvements
+
+* Pin ibc-go to **v10.5.0** (was a v10.3.1 pseudo-version).
+* Replace the vendored ibc-go v8 `testing/` harness with ibc-go v10.5 `testing` plus a simapp that wires `x/nft` and nft-transfer. Keeper ICS-721 tests use `ibctesting.NewCustomAppCoordinator`.
+
 ## [v1.2.0-ibc-v10] - 2026-08-18
 
 Uptick Network fork of `bianjieai/nft-transfer` for ibc-go v10.
